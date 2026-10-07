@@ -1,8 +1,8 @@
-\# Network Troubleshooting Case Study
+# Network Troubleshooting Case Study
 
 
 
-\## Objective
+## Objective
 
 
 
@@ -10,27 +10,27 @@ Determine whether a Windows workstation had functioning network and Internet con
 
 
 
-\## Tools Used
+## Tools Used
 
 
 
-\- `ipconfig`
+- `ipconfig`
 
-\- `ping`
+- `ping`
 
-\- `nslookup`
+- `nslookup`
 
-\- `tracert`
+- `tracert`
 
-\- `arp -a`
-
-
-
-\## Tests and Findings
+- `arp -a`
 
 
 
-\### IPv4 Connectivity
+## Tests and Findings
+
+
+
+### IPv4 Connectivity
 
 
 
@@ -42,7 +42,7 @@ This confirmed that the workstation had working IPv4 Internet connectivity.
 
 
 
-\### DNS Resolution
+### DNS Resolution
 
 
 
@@ -54,7 +54,7 @@ This showed that DNS resolution was functioning.
 
 
 
-\### Routing
+### Routing
 
 
 
@@ -66,7 +66,7 @@ This demonstrated that traffic could travel beyond the local gateway and across 
 
 
 
-\### IPv6 Testing
+### IPv6 Testing
 
 
 
@@ -82,7 +82,7 @@ Instead, the evidence suggested an IPv6-specific connectivity or routing issue r
 
 
 
-\### ARP Inspection
+### ARP Inspection
 
 
 
@@ -90,7 +90,7 @@ Instead, the evidence suggested an IPv6-specific connectivity or routing issue r
 
 
 
-\## Troubleshooting Logic
+## Troubleshooting Logic
 
 
 
@@ -98,17 +98,17 @@ The problem was tested in stages:
 
 
 
-1\. Verify local network configuration.
+1. Verify local network configuration.
 
-2\. Test direct IP connectivity.
+2. Test direct IP connectivity.
 
-3\. Test DNS resolution.
+3. Test DNS resolution.
 
-4\. Inspect the network path.
+4. Inspect the network path.
 
-5\. Compare IPv4 and IPv6 behavior.
+5. Compare IPv4 and IPv6 behavior.
 
-6\. Inspect local ARP information.
+6. Inspect local ARP information.
 
 
 
@@ -116,21 +116,23 @@ Testing each component separately prevented an IPv6-specific issue from being in
 
 
 
-\## Skills Demonstrated
+## Skills Demonstrated
 
 
 
-\- Basic TCP/IP troubleshooting
+- Basic TCP/IP troubleshooting
 
-\- IPv4 versus IPv6 isolation
+- IPv4 versus IPv6 isolation
 
-\- DNS verification
+- DNS verification
 
-\- Route-path inspection
+- Route-path inspection
 
-\- ARP table inspection
+- ARP table inspection
 
-\- Evidence-based troubleshooting
+- Evidence-based troubleshooting
 
-\- Technical documentation
+- Technical documentation
+
+
 

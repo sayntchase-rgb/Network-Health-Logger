@@ -1,4 +1,4 @@
-\# Network Health Logger
+# Network Health Logger
 
 
 
@@ -6,7 +6,7 @@ A lightweight Python network-monitoring utility that checks connectivity, measur
 
 
 
-\## Purpose
+## Purpose
 
 
 
@@ -14,33 +14,33 @@ This project was built to practice and demonstrate practical skills in:
 
 
 
-\- Python scripting
+- Python scripting
 
-\- Network troubleshooting
+- Network troubleshooting
 
-\- ICMP/ping testing
+- ICMP/ping testing
 
-\- Latency measurement
+- Latency measurement
 
-\- Process return-code handling
+- Process return-code handling
 
-\- File logging
+- File logging
 
-\- Git version control
+- Git version control
 
-\- Technical documentation
-
-
-
-\## Features
+- Technical documentation
 
 
 
-\- Tests connectivity to a network target
+## Features
 
-\- Measures ping latency
 
-\- Classifies network status as:
+
+- Tests connectivity to a network target
+
+- Measures ping latency
+
+- Classifies network status as:
 
 &#x20; - `HEALTHY` — latency of 100 ms or less
 
@@ -48,11 +48,11 @@ This project was built to practice and demonstrate practical skills in:
 
 &#x20; - `DOWN` — ping test fails
 
-\- Adds timestamps to each result
+- Adds timestamps to each result
 
-\- Stores historical results in a local log
+- Stores historical results in a local log
 
-\- Includes sample monitoring output for review
+- Includes sample monitoring output for review
 
 
 
@@ -60,7 +60,7 @@ This project was built to practice and demonstrate practical skills in:
 
 
 
-\## Example Output
+## Example Output
 
 
 
@@ -76,15 +76,15 @@ This project was built to practice and demonstrate practical skills in:
 
 
 
-\## Requirements
+## Requirements
 
 
 
-\- Windows
+- Windows
 
-\- Python 3
+- Python 3
 
-\- Network connectivity
+- Network connectivity
 
 
 
@@ -92,7 +92,7 @@ Developed using Python 3.11.9.
 
 
 
-\## Usage
+## Usage
 
 
 
@@ -102,7 +102,7 @@ Run from PowerShell:
 
 ```powershell
 
-py network\\\_health\\\_logger.py
+py network_health_logger.py
 
 ```
 
@@ -114,17 +114,17 @@ The program displays the current result and appends it to:
 
 ```text
 
-network\\\_health.log
+network_health.log
 
 ```
 
 
 
-Runtime log files are excluded from Git using `.gitignore`. A static example is included in `sample\\\_output.txt`.
+Runtime log files are excluded from Git using `.gitignore`. A static example is included in `sample_output.txt`.
 
 
 
-\## Project Structure
+## Project Structure
 
 
 
@@ -132,9 +132,9 @@ Runtime log files are excluded from Git using `.gitignore`. A static example is 
 
 Network-Health-Logger/
 
-├── network\\\_health\\\_logger.py
+├── network_health_logger.py
 
-├── sample\\\_output.txt
+├── sample_output.txt
 
 ├── README.md
 
@@ -144,9 +144,11 @@ Network-Health-Logger/
 
 
 
-\## Skills Demonstrated
+## Skills Demonstrated
 
 
 
 This project demonstrates basic network diagnostics, Python automation, structured troubleshooting, logging, documentation, and Git-based development.
+
+
 
