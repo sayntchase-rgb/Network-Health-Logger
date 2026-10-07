@@ -14,8 +14,14 @@ if result.returncode == 0:
 
     if match:
         latency = int(match.group(1))
-        print(f"{target} is reachable - {latency} ms")
+
+        if latency <= 100:
+            status = "HEALTHY"
+        else:
+            status = "DEGRADED"
+
+        print(f"{target} | {latency} ms | {status}")
     else:
-        print(f"{target} is reachable - latency unavailable")
+        print(f"{target} | latency unavailable | DEGRADED")
 else:
-    print(f"{target} is unreachable")
+    print(f"{target} | DOWN")
