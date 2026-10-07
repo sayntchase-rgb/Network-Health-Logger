@@ -151,4 +151,8 @@ Network-Health-Logger/
 This project demonstrates basic network diagnostics, Python automation, structured troubleshooting, logging, documentation, and Git-based development.
 
 
+## Execution Proof
 
+The logger running successfully in Windows PowerShell:
+
+![Network Health Logger running](screenshots/logger-running.png)
