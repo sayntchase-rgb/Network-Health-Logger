@@ -1,5 +1,7 @@
 # Network Health Logger
 
+[![Tests](https://github.com/sayntchase-rgb/Network-Health-Logger/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/sayntchase-rgb/Network-Health-Logger/actions/workflows/tests.yml)
+
 
 
 A lightweight Python network-monitoring utility that checks connectivity, measures latency, classifies network health, and records timestamped historical results.
@@ -124,22 +126,44 @@ Runtime log files are excluded from Git using `.gitignore`. A static example is 
 
 
 
+## Automated Tests
+
+From the repository folder, run in PowerShell:
+
+```powershell
+py -m unittest discover -s tests -v
+```
+
+If your Python command is `python`, use `python -m unittest discover -s tests -v`.
+No additional packages are needed: the tests use Python's built-in `unittest`.
+
+The eight tests cover healthy replies, the inclusive 100 ms boundary, degraded
+latency, unavailable latency, failed pings, timestamped console/file output,
+and appending without overwriting earlier log entries. They also preserve the
+current behavior of displaying `time<1ms` as `1 ms`.
+
+Tests simulate ping responses and use a fixed clock and temporary log files.
+They do not send network traffic or modify your real `network_health.log`.
+These tests verify the script's behavior, not live connectivity or Windows ping itself.
+
+The **Tests** GitHub Actions workflow runs the same test command on Windows with
+Python 3.11 for every push and pull request. The badge above shows the latest
+workflow status on `main`; click it to inspect runs and any failures.
+
 ## Project Structure
 
 
 
 ```text
-
 Network-Health-Logger/
-
+├── .github/workflows/tests.yml
+├── tests/test_network_health_logger.py
+├── screenshots/logger-running.png
 ├── network_health_logger.py
-
 ├── sample_output.txt
-
+├── troubleshooting.md
 ├── README.md
-
 └── .gitignore
-
 ```
 
 
