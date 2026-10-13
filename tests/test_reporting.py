@@ -6,7 +6,10 @@ from pathlib import Path
 from chase_core.networking.health import PingResult
 from chase_core.networking.reporting import (
     HealthRecord,
+    ReportContext,
     append_csv_record,
+    build_findings,
+    build_recommendations,
     health_record_from_ping,
     load_csv_records,
     render_html_report,
@@ -61,8 +64,34 @@ class ReportingTests(unittest.TestCase):
             append_csv_record(HealthRecord(start, "1.1.1.1", "HEALTHY", 12, 0.0), csv_path)
             filtered = load_csv_records(csv_path, target="8.8.8.8")
             summary = summarize_records(filtered)
-            self.assertIn("NETWORK HEALTH REPORT", render_text_report(summary))
-            self.assertIn("Network Health Report", render_html_report(summary))
+            self.assertIn("NETWORK HEALTH DIAGNOSTIC REPORT", render_text_report(summary))
+            self.assertIn("Network Health Diagnostic Report", render_html_report(summary))
+
+    def test_customer_context_findings_and_recommendations(self):
+        start = datetime(2026, 10, 12, 20, 0, 0)
+        records = [
+            HealthRecord(start, "8.8.8.8", "HEALTHY", 15, 0.0),
+            HealthRecord(start + timedelta(minutes=1), "8.8.8.8", "DOWN", None, 100.0),
+            HealthRecord(start + timedelta(minutes=2), "8.8.8.8", "DEGRADED", 145, 0.0),
+        ]
+        summary = summarize_records(records)
+        context = ReportContext(
+            client_name="Demo Client",
+            site_name="Home Office",
+            prepared_by="Network Technician",
+            notes="Intermittent connection reported.",
+        )
+        text = render_text_report(summary, context)
+        html = render_html_report(summary, context)
+
+        self.assertIn("Demo Client", text)
+        self.assertIn("Home Office", html)
+        self.assertIn("FINDINGS", text)
+        self.assertIn("RECOMMENDED NEXT STEPS", text)
+        self.assertTrue(build_findings(summary))
+        self.assertTrue(build_recommendations(summary))
+        self.assertIn("Correlate outage timestamps", text)
+        self.assertIn("Compare wired and Wi-Fi tests", html)
 
     def test_write_reports(self):
         start = datetime(2026, 10, 12, 20, 0, 0)
@@ -70,9 +99,16 @@ class ReportingTests(unittest.TestCase):
             csv_path = Path(temp_dir) / "health.csv"
             append_csv_record(HealthRecord(start, "8.8.8.8", "HEALTHY", 15, 0.0), csv_path)
             prefix = Path(temp_dir) / "reports" / "health"
-            text_path, html_path = write_reports(csv_path, prefix, target="8.8.8.8")
+            context = ReportContext(client_name="Demo Client")
+            text_path, html_path = write_reports(
+                csv_path,
+                prefix,
+                target="8.8.8.8",
+                context=context,
+            )
             self.assertTrue(text_path.exists())
             self.assertTrue(html_path.exists())
+            self.assertIn("Demo Client", text_path.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
