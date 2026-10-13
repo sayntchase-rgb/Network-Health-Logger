@@ -1,6 +1,6 @@
 # Network Health Logger
 
-A lightweight Python network-monitoring utility that checks reachability, measures latency, classifies network health, stores structured history, and generates customer-readable reports.
+A lightweight Python network-monitoring utility that checks reachability, measures latency, classifies network health, stores structured history, and generates customer-readable diagnostic reports.
 
 ## Purpose
 
@@ -12,11 +12,12 @@ This project demonstrates practical skills in:
 - Latency measurement
 - Structured CSV logging
 - Availability and loss analysis
-- Report generation
+- Customer-facing report generation
 - Error handling
 - Unit testing
 - Git/GitHub workflow
 - Technical documentation
+- Service productization
 
 ## Features
 
@@ -30,11 +31,13 @@ This project demonstrates practical skills in:
 - Counts healthy, degraded, and down checks
 - Detects downtime events and longest observed outage windows
 - Generates TXT and standalone HTML reports
+- Adds optional client, site, technician, and notes metadata
+- Generates plain-language findings and suggested next diagnostic steps
 - Supports target filtering when generating a report
 - Uses reusable helpers in `chase_core`
 - Has no third-party Python dependencies
 
-> The default 100 ms HEALTHY threshold and the overall report grade are project-defined, not universal networking standards.
+> The default 100 ms HEALTHY threshold, overall report grade, and generated recommendations are project-defined diagnostic aids, not universal networking standards or certifications.
 
 ## Requirements
 
@@ -77,7 +80,7 @@ py network_health_logger.py --csv-file logs\home_network.csv
 
 ## Automatic Reporting
 
-Regenerate TXT and HTML reports after the new check:
+Regenerate TXT and HTML reports after a new check:
 
 ```powershell
 py network_health_logger.py --report-prefix reports\network_health_report
@@ -90,23 +93,59 @@ reports\network_health_report.txt
 reports\network_health_report.html
 ```
 
-## Generate a Report From Existing History
+## Generate a Customer Diagnostic Report
+
+Basic report from existing history:
 
 ```powershell
 py report_generator.py
 ```
 
-Custom history and output location:
+Customer-facing example:
 
 ```powershell
-py report_generator.py --csv-file logs\home_network.csv --output-prefix reports\home_network
+py report_generator.py `
+  --csv-file examples\customer_demo.csv `
+  --output-prefix reports\demo_client `
+  --target 8.8.8.8 `
+  --client-name "Demo Client" `
+  --site-name "Home Office" `
+  --prepared-by "Network Technician" `
+  --notes "Intermittent connection reported."
 ```
+
+The generated TXT and HTML reports include:
+
+- customer/site metadata
+- executive summary
+- measured network statistics
+- plain-language findings
+- suggested next diagnostic steps
+- measurement limitations
 
 If one CSV contains multiple targets, filter the report:
 
 ```powershell
 py report_generator.py --target 8.8.8.8
 ```
+
+## Productized Service Experiment
+
+`SERVICE_PACKAGE.md` defines the first monetization experiment around this project: a **Network Health Diagnostic** offered at an introductory validation price of **$75**.
+
+The service package includes:
+
+- customer fit/problem definition
+- deliverables
+- scope boundaries
+- intake workflow
+- monitoring workflow
+- report-generation workflow
+- case-study process
+- validation metrics
+- upgrade path toward recurring monitoring
+
+The goal is to validate one real paid diagnostic before adding a large feature set.
 
 ## CSV Format
 
@@ -117,7 +156,7 @@ timestamp,target,status,latency_ms,packet_loss_pct
 2026-10-12 20:03:00,8.8.8.8,DOWN,,100.0
 ```
 
-Version 1.1 still performs one ICMP probe per execution. Each individual row therefore records either `0.0` or `100.0` observed probe loss. The generated report averages those observations across the selected monitoring period to estimate availability/loss behavior.
+The current logger still performs one ICMP probe per execution. Each individual row therefore records either `0.0` or `100.0` observed probe loss. Generated reports average those observations across the selected monitoring period to estimate availability/loss behavior.
 
 ## Report Metrics
 
@@ -126,7 +165,7 @@ Generated reports include:
 - monitoring period
 - total checks
 - uptime percentage
-- observed packet-loss percentage
+- observed probe-loss percentage
 - healthy/degraded/down counts
 - average latency
 - minimum latency
@@ -143,7 +182,7 @@ Run the full unit suite from the repository root:
 py -m unittest discover -s tests -v
 ```
 
-The tests cover core ping normalization and formatting plus CSV persistence, report calculations, target filtering, outage detection, and report file generation.
+Tests cover core ping normalization and formatting plus CSV persistence, report calculations, target filtering, outage detection, report file generation, customer metadata, findings, and recommendations.
 
 ## Project Structure
 
@@ -158,6 +197,9 @@ Network-Health-Logger/
 │       ├── __init__.py
 │       ├── health.py
 │       └── reporting.py
+├── examples/
+│   ├── customer_demo.csv
+│   └── README.md
 ├── screenshots/
 │   └── logger-running.png
 ├── tests/
@@ -170,6 +212,7 @@ Network-Health-Logger/
 ├── README.md
 ├── RELEASE_NOTES_v1.0.md
 ├── RELEASE_NOTES_v1.1.md
+├── SERVICE_PACKAGE.md
 ├── sample_output.txt
 ├── troubleshooting.md
 └── VERSION
@@ -179,7 +222,7 @@ Network-Health-Logger/
 
 `network_health_logger.py` remains the live check entry point. Core ping behavior lives in `chase_core/networking/health.py`.
 
-`chase_core/networking/reporting.py` handles structured records, CSV persistence, historical analysis, and TXT/HTML report rendering. `report_generator.py` provides a separate command-line entry point for turning existing CSV history into reports.
+`chase_core/networking/reporting.py` handles structured records, CSV persistence, historical analysis, customer metadata, findings, recommendations, and TXT/HTML rendering. `report_generator.py` provides the command-line entry point for turning existing CSV history into customer-facing reports.
 
 This keeps live network probing separate from analysis and presentation logic.
 
@@ -191,15 +234,15 @@ The original logger running successfully in Windows PowerShell:
 
 ## Scope
 
-Version 1.1 is a reporting-focused release. It does not yet run a permanent background monitoring loop, perform multi-packet sampling per interval, send alerts, host a dashboard, or use a database.
+The current release does not yet run a permanent background monitoring loop, perform multi-packet sampling per interval, send alerts, host a dashboard, or use a database.
 
-Those remain future extensions rather than being mixed into the reporting milestone.
+Those are candidates for later validation-driven upgrades rather than being mixed into the first customer diagnostic package.
 
 ## Version
 
-Current project version: `1.1.0`.
+Current tagged project version: `1.1.0`.
 
-See `RELEASE_NOTES_v1.1.md` for the current release summary.
+The customer-diagnostic work is being developed as the next productization increment.
 
 ## License
 
