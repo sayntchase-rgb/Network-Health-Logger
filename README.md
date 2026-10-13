@@ -111,10 +111,13 @@ Network-Health-Logger/
 ├── tests/
 │   └── test_health.py
 ├── .gitignore
+├── LICENSE
 ├── network_health_logger.py
 ├── README.md
+├── RELEASE_NOTES_v1.0.md
 ├── sample_output.txt
-└── troubleshooting.md
+├── troubleshooting.md
+└── VERSION
 ```
 
 ## Architecture
@@ -149,3 +152,13 @@ The logger running successfully in Windows PowerShell:
 ## Scope
 
 Version 1.0 is intentionally small: one probe per execution, one normalized result, and one append-only local log. Continuous scheduling, dashboards, databases, alerts, and multi-target monitoring are possible future extensions, but they are outside the v1.0 scope.
+
+## Version
+
+Current project version: `1.0.0`.
+
+See `RELEASE_NOTES_v1.0.md` for the v1.0 release summary.
+
+## License
+
+This project is licensed under the MIT License. See `LICENSE` for details.
