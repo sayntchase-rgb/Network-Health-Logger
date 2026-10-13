@@ -1,4 +1,8 @@
 network_health.log
+network_health.csv
+network_health_report.txt
+network_health_report.html
+reports/
 *.log
 __pycache__/
 *.py[cod]
