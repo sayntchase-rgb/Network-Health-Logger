@@ -21,13 +21,14 @@ class PingResult:
 
 
 def classify_latency(latency_ms: Optional[int], healthy_max_ms: int = 100) -> str:
-    """Convert reachability/latency data into a health status."""
+    """Convert latency data into a project-defined health status."""
     if latency_ms is None:
         return "DEGRADED"
     return "HEALTHY" if latency_ms <= healthy_max_ms else "DEGRADED"
 
 
 def _ping_command(target: str, timeout_ms: int) -> list[str]:
+    """Build a one-probe ping command for Windows or Unix-like systems."""
     if platform.system().lower() == "windows":
         return ["ping", "-n", "1", "-w", str(timeout_ms), target]
 
@@ -36,7 +37,7 @@ def _ping_command(target: str, timeout_ms: int) -> list[str]:
 
 
 def _parse_latency_ms(output: str) -> Optional[int]:
-    """Extract an integer latency from common Windows/Linux ping output."""
+    """Extract integer latency from common Windows/Linux ping output."""
     match = re.search(r"time\s*[=<]\s*(\d+(?:\.\d+)?)\s*ms", output, re.IGNORECASE)
     if not match:
         return None
@@ -44,13 +45,23 @@ def _parse_latency_ms(output: str) -> Optional[int]:
 
 
 def ping_host(target: str, timeout_ms: int = 1000) -> PingResult:
-    """Ping one host once and return normalized reachability and latency."""
-    result = subprocess.run(
-        _ping_command(target, timeout_ms),
-        capture_output=True,
-        text=True,
-        check=False,
-    )
+    """Ping one host once and return normalized reachability and latency.
+
+    Missing ping executables, process-launch failures, and command timeouts are
+    normalized to an unreachable result so the logger can fail cleanly.
+    """
+    process_timeout_seconds = max(2.0, (timeout_ms / 1000) + 1.0)
+
+    try:
+        result = subprocess.run(
+            _ping_command(target, timeout_ms),
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=process_timeout_seconds,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return PingResult(reachable=False, latency_ms=None)
 
     if result.returncode != 0:
         return PingResult(reachable=False, latency_ms=None)
