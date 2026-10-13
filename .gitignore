@@ -1,1 +1,8 @@
-﻿network_health.log
+network_health.log
+*.log
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
