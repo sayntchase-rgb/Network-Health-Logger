@@ -1,1 +1,0 @@
-v1.0 preparation complete except GitHub tag/release publication.
